@@ -7,6 +7,7 @@ from flask_login import current_user, login_user, login_required, logout_user
 from datetime import datetime
 from app.email import send_password_reset_email
 
+
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 @login_required
@@ -87,11 +88,13 @@ def user(username):
     return render_template('user.html', user=user, posts=posts.items,
                            next_url=next_url, prev_url=prev_url)
 
+
 @app.before_request
 def before_request():
     if current_user.is_authenticated:
         current_user.last_seen = datetime.utcnow()
         db.session.commit()
+
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
@@ -157,6 +160,7 @@ def explore():
 
     return render_template('index.html', title='Explore', posts=posts.items,
                            next_url=next_url, prev_url=prev_url)
+
 
 @app.route('/reset_password_request', methods=['GET', 'POST'])
 def reset_password_request():
